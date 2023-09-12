@@ -8,8 +8,8 @@ const Header = () => {
         MyBlog
       </Link>
       <nav className="flex flex-row gap-5">
-        <Link to="/login">Login</Link>
-        <Link to="/signup">Register</Link>
+        <Link to="/login">Signin</Link>
+        <Link to="/signup">Signup</Link>
       </nav>
     </header>
   );

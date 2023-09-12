@@ -6,7 +6,7 @@ import Spinner from "../components/Spinner";
 import { useSnackbar } from "notistack";
 
 const LoginPage = () => {
-  const [loading, setLoading] = useState("");
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 

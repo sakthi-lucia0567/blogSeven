@@ -7,15 +7,24 @@ import { useSnackbar } from "notistack";
 
 const SignupPage = () => {
   const [loading, setLoading] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+    setError("");
+
     const form = new FormData(e.currentTarget);
     const email = form.get("email");
-    const password = form.get("password");
-    const confirmPassword = form.get("confirmPassword");
     console.log("data coming from form", { email, password });
 
     const data = {
@@ -38,7 +47,7 @@ const SignupPage = () => {
       })
       .catch((err) => {
         setLoading(false);
-        enqueueSnackbar("User Not Exist", {
+        enqueueSnackbar("User Already Exist", {
           variant: "error",
           anchorOrigin: {
             vertical: "bottom",
@@ -61,6 +70,8 @@ const SignupPage = () => {
           </label>
           <input
             type="email"
+            name="email"
+            autoComplete="off"
             className="mt-2 block w-full rounded-lg border bg-white px-4 py-2 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:focus:border-blue-300"
           />
         </div>
@@ -78,7 +89,11 @@ const SignupPage = () => {
           <input
             type="password"
             name="password"
-            className="mt-2 block w-full rounded-lg border bg-white px-4 py-2 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:focus:border-blue-300"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className={`${
+              error ? "border-red-500" || "dark: border-red-500" : "bg-white"
+            } mt-2 block w-full rounded-lg border bg-white px-4 py-2 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:focus:border-blue-300`}
           />
         </div>
         <div className="mt-4">
@@ -90,11 +105,16 @@ const SignupPage = () => {
               Confirm Password
             </label>
           </div>
+          {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
 
           <input
-            type="confirmPassword"
+            type="password"
             name="confirmPassword"
-            className="mt-2 block w-full rounded-lg border bg-white px-4 py-2 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:focus:border-blue-300"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            className={`${
+              error ? "border-red-500" || "dark: border-red-500" : "bg-white"
+            } mt-2 block w-full rounded-lg border bg-white px-4 py-2 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:focus:border-blue-300`}
           />
         </div>
 
@@ -106,12 +126,13 @@ const SignupPage = () => {
       </form>
 
       <p className="mt-8 text-center text-xs font-light text-gray-400">
-        Already have an account?
+        {" "}
+        Already have an account?{" "}
         <Link
           to="/login"
           className="font-medium text-gray-700 hover:underline dark:text-gray-200"
         >
-          Create One
+          SignIn...!
         </Link>
       </p>
     </div>
